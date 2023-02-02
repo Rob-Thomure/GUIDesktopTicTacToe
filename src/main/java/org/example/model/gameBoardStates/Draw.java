@@ -1,13 +1,12 @@
-package org.example.GameBoardStates;
+package org.example.model.gameBoardStates;
 
 import org.example.GameBoard;
-import org.example.GameBoardState;
 import org.example.Player;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-public class X_Wins implements GameBoardState {
+public class Draw implements GameBoardState {
     @Override
     public GameBoardState markSpace(List<Player> players, Player player,
                                     Consumer<GameBoard> markGameBoard) {

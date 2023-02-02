@@ -1,7 +1,6 @@
-package org.example.GameBoardStates;
+package org.example.model.gameBoardStates;
 
 import org.example.GameBoard;
-import org.example.GameBoardState;
 import org.example.Player;
 
 import java.util.List;

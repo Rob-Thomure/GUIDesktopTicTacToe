@@ -1,4 +1,7 @@
-package org.example;
+package org.example.model.gameBoardStates;
+
+import org.example.GameBoard;
+import org.example.Player;
 
 import java.util.List;
 import java.util.function.Consumer;

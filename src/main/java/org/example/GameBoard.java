@@ -1,6 +1,7 @@
 package org.example;
 
-import org.example.GameBoardStates.NotStarted;
+import org.example.model.gameBoardStates.GameBoardState;
+import org.example.model.gameBoardStates.NotStarted;
 
 import java.util.Arrays;
 import java.util.List;
