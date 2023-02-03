@@ -14,4 +14,9 @@ public class Blank implements CellState {
     public String toString() {
         return "Blank{}";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.toString().equals(obj.toString());
+    }
 }

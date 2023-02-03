@@ -5,6 +5,7 @@ import org.example.model.cellStates.CellState;
 import org.example.model.cellStates.O;
 import org.example.model.cellStates.X;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class Cell {
@@ -24,4 +25,23 @@ public class Cell {
         return newCellState;
     }
 
+    @Override
+    public String toString() {
+        return "Cell{" +
+                "cellState=" + cellState +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cell cell = (Cell) o;
+        return this.cellState.equals(cell.cellState);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cellState);
+    }
 }

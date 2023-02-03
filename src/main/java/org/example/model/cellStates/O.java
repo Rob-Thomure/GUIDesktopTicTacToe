@@ -12,4 +12,9 @@ public class O implements CellState {
     public String toString() {
         return "O{}";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.toString().equals(obj.toString());
+    }
 }
