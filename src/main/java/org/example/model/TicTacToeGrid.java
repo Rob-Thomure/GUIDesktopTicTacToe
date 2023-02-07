@@ -5,6 +5,8 @@ import org.example.model.CellState;
 import org.example.model.GameStatus;
 
 import java.util.Arrays;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 public class TicTacToeGrid {
     public Cell[][] gameGrid;
@@ -30,26 +32,18 @@ public class TicTacToeGrid {
         this.O_CELL.setCellStatus(CellState.O);
     }
 
-    public void printGameGrid() {
-        for (var row : gameGrid) {
-            System.out.println(Arrays.toString(row));
-        }
-    }
-
-    public void printVectors() {
-        for (var row : this.vectors) {
-            System.out.println(Arrays.toString(row));
-        }
-    }
+    Predicate<Cell> isEmptyCell = cell -> cell.equals(EMPTY_CELL);
+    Predicate<GameStatus> gameIsNotStarted = gameState -> gameState.equals(GameStatus.GAME_NOT_STARTED);
+    Predicate<GameStatus> gameIsInProgress = gameState -> gameState.equals(GameStatus.GAME_IN_PROGRESS);
 
     public boolean setCell(int row, int column, CellState cellState) {
-        if (gameGrid[row][column].equals(EMPTY_CELL) &&
-                (gameStatus.equals(GameStatus.GAME_NOT_STARTED) || gameStatus.equals(GameStatus.GAME_IN_PROGRESS))) {
+        if (isEmptyCell.test(gameGrid[row][column]) && (gameIsNotStarted.or(gameIsInProgress).test(gameStatus))) {
             gameGrid[row][column].setCellStatus(cellState);
             updateGameStatus();
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     private void setGameGrid() {
@@ -93,7 +87,7 @@ public class TicTacToeGrid {
     }
 
     private void updateGameStatus() {
-        if (gameStatus == GameStatus.GAME_NOT_STARTED) {
+        if (gameIsNotStarted.test(gameStatus)   /*gameStatus == GameStatus.GAME_NOT_STARTED */) {
             gameStatus = GameStatus.GAME_IN_PROGRESS;
         } else if (isThreeInRow(X_CELL)) {
             gameStatus = GameStatus.X_WINS;

@@ -38,6 +38,9 @@ public class TicTacToe extends JFrame {
 
         JButton buttonReset = new JButton("RESET");
         buttonReset.setName("ButtonReset");
+
+
+
         buttonReset.addActionListener(e -> controller.resetGame(cells));
         footer.add(buttonReset, BorderLayout.EAST);
         add(footer, BorderLayout.SOUTH);

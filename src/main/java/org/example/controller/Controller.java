@@ -8,6 +8,7 @@ import org.example.view.TicTacToe;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class Controller {
     Player player = new Player();

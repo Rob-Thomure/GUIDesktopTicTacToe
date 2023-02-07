@@ -10,9 +10,7 @@ public class Cell {
         this.cellState = CellState.EMPTY;
     }
 
-    Predicate isEmptyCell = n -> n.equals(CellState.EMPTY);
-
-
+    Predicate<CellState> isEmptyCell = cell -> cell.equals(CellState.EMPTY);
 
     public boolean setCellStatus(CellState cellState) {
         if (isEmptyCell.test(this.cellState)) {
@@ -21,12 +19,6 @@ public class Cell {
         } else {
             return false;
         }
-//        if (this.cellState.equals(CellState.EMPTY)) {
-//            this.cellState = cellState;
-//            return true;
-//        } else {
-//            return false;
-//        }
     }
 
     public CellState getCellStatus() {
