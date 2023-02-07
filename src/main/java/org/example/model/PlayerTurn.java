@@ -1,4 +1,4 @@
-package org.example.temp;
+package org.example.model;
 
 public enum PlayerTurn {
     X, O

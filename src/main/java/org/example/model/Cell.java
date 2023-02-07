@@ -1,35 +1,25 @@
 package org.example.model;
 
-import org.example.model.cellStates.Blank;
-import org.example.model.cellStates.CellState;
-import org.example.model.cellStates.O;
-import org.example.model.cellStates.X;
-
 import java.util.Objects;
-import java.util.Optional;
 
 public class Cell {
-    private CellState cellState;
+    CellState cellState;
 
     {
-        this.cellState = new Blank();
+        this.cellState = CellState.EMPTY;
     }
 
-    public CellState getCellState() {
+    public boolean setCellStatus(CellState cellState) {
+        if (this.cellState.equals(CellState.EMPTY)) {
+            this.cellState = cellState;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public CellState getCellStatus() {
         return this.cellState;
-    }
-
-    public Optional<CellState> setCellState(CellState cellState) {
-        Optional<CellState> newCellState = this.cellState.setCellState(cellState);
-        newCellState.ifPresent((a) -> this.cellState = a);
-        return newCellState;
-    }
-
-    @Override
-    public String toString() {
-        return "Cell{" +
-                "cellState=" + cellState +
-                '}';
     }
 
     @Override
@@ -37,11 +27,18 @@ public class Cell {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cell cell = (Cell) o;
-        return this.cellState.equals(cell.cellState);
+        return cellState == cell.cellState;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(cellState);
+    }
+
+    @Override
+    public String toString() {
+        return "Cell{" +
+                "cellStatus=" + cellState +
+                '}';
     }
 }
