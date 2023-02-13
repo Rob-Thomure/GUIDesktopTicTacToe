@@ -1,8 +1,8 @@
 package org.example.model;
 
 public class Coordinates {
-    private int row;
-    private int column;
+    private final int row;
+    private final int column;
 
     public Coordinates(int row, int column) {
         this.row = row;

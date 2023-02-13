@@ -7,10 +7,10 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class TicTacToe extends JFrame {
-    private Controller controller;
+    private final Controller controller;
     private static JLabel labelStatus;
-    private ArrayList<JButton> cells;
-    private JPanel board;
+    private final ArrayList<JButton> cells;
+    private final JPanel board;
 
     public TicTacToe() {
         cells = new ArrayList<>();
@@ -31,7 +31,7 @@ public class TicTacToe extends JFrame {
 
         JPanel footer = new JPanel();
         footer.setLayout(new BorderLayout());
-        this.labelStatus = new JLabel("Game is not started");
+        labelStatus = new JLabel("Game is not started");
         labelStatus.setName("LabelStatus");
 
         footer.add(labelStatus, BorderLayout.WEST);

@@ -7,7 +7,7 @@ public enum GameStatus {
     O_WINS("O wins"),
     DRAW("Draw");
 
-    String value;
+     private final String value;
 
     GameStatus(String value) {
         this.value = value;

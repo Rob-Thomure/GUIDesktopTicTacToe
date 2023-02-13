@@ -1,16 +1,12 @@
 package org.example.model;
 
-import org.example.model.Cell;
-import org.example.model.CellState;
-import org.example.model.GameStatus;
-
 import java.util.Arrays;
-import java.util.function.BiPredicate;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 public class TicTacToeGrid {
-    public Cell[][] gameGrid;
-    private Cell[][] vectors;
+    private final Cell[][] gameGrid;
+    private final Cell[][] vectors;
     private GameStatus gameStatus;
 
     private final Cell EMPTY_CELL;
@@ -109,7 +105,7 @@ public class TicTacToeGrid {
 
     public boolean hasEmptyCell() {
         for (var vector : vectors) {
-            if (Arrays.stream(vector).anyMatch(cell -> cell.equals(EMPTY_CELL))) {
+            if (Arrays.asList(vector).contains(EMPTY_CELL)) {
                 return true;
             }
         }
