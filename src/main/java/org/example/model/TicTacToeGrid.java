@@ -1,7 +1,6 @@
 package org.example.model;
 
 import java.util.Arrays;
-import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 public class TicTacToeGrid {
@@ -36,6 +35,11 @@ public class TicTacToeGrid {
         if (isEmptyCell.test(gameGrid[row][column]) && (gameIsNotStarted.or(gameIsInProgress).test(gameStatus))) {
             gameGrid[row][column].setCellStatus(cellState);
             updateGameStatus();
+
+            //**************************************************************************************
+            rateAllCells();
+            //*******************************************************************************************
+
             return true;
         } else {
             return false;
@@ -95,12 +99,11 @@ public class TicTacToeGrid {
     }
 
     public boolean isThreeInRow(Cell cellValue) {
-        for (var vector : vectors) {
-            if (Arrays.stream(vector).allMatch(cell -> cell.equals(cellValue))) {
-                return true;
-            }
-        }
-        return false;
+        Long count = Arrays.stream(vectors)
+                .map(a -> Arrays.stream(a))
+                .filter(a -> a.allMatch(cell -> cell.equals(cellValue)))
+                .count();
+        return count >= 1;
     }
 
     public boolean hasEmptyCell() {
@@ -114,6 +117,66 @@ public class TicTacToeGrid {
 
     public GameStatus getGameStatus() {
         return this.gameStatus;
+    }
+
+    //************************************************************************************************************
+
+    private void rateAllCells() {
+        resetAllCellRatings();
+        Arrays.stream(vectors)
+                .filter(this::hasOneMatchingInVector)
+                .flatMap(vector -> Arrays.stream(vector).filter(this::isEmptyCell))
+                .forEach(cell -> cell.setCellRating(10));
+        Arrays.stream(vectors)
+                .filter(this::hasTwoMatchingInVector)
+                .flatMap(vector -> Arrays.stream(vector).filter(this::isEmptyCell))
+                .forEach(cell -> cell.setCellRating(20));
+    }
+
+    private void resetAllCellRatings() {
+        Arrays.stream(vectors)
+                .flatMap(vector -> Arrays.stream(vector))
+                .forEach(cell -> cell.setCellRating(0));
+    }
+
+    private boolean isEmptyCell(Cell cell) {
+        return cell.equals(EMPTY_CELL);
+    }
+
+    private boolean hasTwoMatchingInVector(Cell[] vector) {
+        return vectorHasTwoX(vector) || vectorHasTwoO(vector);
+    }
+
+    private boolean vectorHasTwoX(Cell[] vector) {
+        long count = Arrays.stream(vector)
+                .filter(a -> a.equals(X_CELL))
+                .count();
+        return count == 2;
+    }
+
+    private boolean vectorHasTwoO(Cell[] vector) {
+        long count = Arrays.stream(vector)
+                .filter(a -> a.equals(O_CELL))
+                .count();
+        return count == 2;
+    }
+
+    private boolean hasOneMatchingInVector(Cell[] vector) {
+        return vectorHasOneX(vector) || vectorHasOneO(vector);
+    }
+
+    private boolean vectorHasOneX(Cell[] vector) {
+        long count = Arrays.stream(vector)
+                .filter(a -> a.equals(X_CELL))
+                .count();
+        return count == 1;
+    }
+
+    private boolean vectorHasOneO(Cell[] vector) {
+        long count = Arrays.stream(vector)
+                .filter(a -> a.equals(O_CELL))
+                .count();
+        return count == 1;
     }
 
 }

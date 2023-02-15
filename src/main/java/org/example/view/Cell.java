@@ -30,4 +30,6 @@ public class Cell extends JButton implements ActionListener {
             TicTacToe.setLabelStatus(controller.getGameStatus());
         }
     }
+
+
 }

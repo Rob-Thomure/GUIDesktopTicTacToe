@@ -5,9 +5,11 @@ import java.util.function.Predicate;
 
 public class Cell {
     CellState cellState;
+    int cellRating;
 
     {
         this.cellState = CellState.EMPTY;
+        this.cellRating = 0;
     }
 
     Predicate<CellState> isEmptyCell = cell -> cell.equals(CellState.EMPTY);
@@ -23,6 +25,14 @@ public class Cell {
 
     public CellState getCellStatus() {
         return this.cellState;
+    }
+
+    public int getCellRating() {
+        return cellRating;
+    }
+
+    public void setCellRating(int cellRating) {
+        this.cellRating = cellRating;
     }
 
     @Override
@@ -42,6 +52,7 @@ public class Cell {
     public String toString() {
         return "Cell{" +
                 "cellStatus=" + cellState +
+                "cellRating=" + cellRating +
                 '}';
     }
 }
