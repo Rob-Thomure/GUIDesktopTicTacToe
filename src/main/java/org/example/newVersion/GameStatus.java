@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.newVersion;
 
 public enum GameStatus {
     GAME_NOT_STARTED("Game is not started"),
@@ -7,7 +7,7 @@ public enum GameStatus {
     O_WINS("O wins"),
     DRAW("Draw");
 
-     private final String value;
+    private final String value;
 
     GameStatus(String value) {
         this.value = value;
@@ -16,6 +16,4 @@ public enum GameStatus {
     public String getValue() {
         return this.value;
     }
-
-
 }
