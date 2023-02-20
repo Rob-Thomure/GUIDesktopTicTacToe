@@ -2,10 +2,7 @@ package org.example.newVersion;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Arrays;
-import java.util.function.Predicate;
 
 public class TicTacToe extends JFrame {
     private Controller controller;

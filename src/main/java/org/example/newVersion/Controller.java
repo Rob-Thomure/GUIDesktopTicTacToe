@@ -87,6 +87,8 @@ public class Controller {
             text = String.format("The %s Player (X) wins", player1);
         } else if (this.gameStatus == GameStatus.O_WINS) {
             text = String.format("The %s Player (O) wins", player2);
+        } else if (this.gameStatus == GameStatus.DRAW) {
+            text = "Draw";
         }
         ticTacToeView.setLabelStatus(text);
     }
