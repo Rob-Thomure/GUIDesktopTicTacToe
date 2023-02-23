@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example;
 
 public class Coordinates {
     private final int row;

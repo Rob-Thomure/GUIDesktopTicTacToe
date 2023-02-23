@@ -1,13 +1,13 @@
-package org.example.model;
+package org.example;
 
 import java.util.Arrays;
+import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.function.Predicate;
 
 public class TicTacToeGrid {
     private final Cell[][] gameGrid;
     private final Cell[][] vectors;
-    private GameStatus gameStatus;
-
     private final Cell EMPTY_CELL;
     private final Cell X_CELL;
     private final Cell O_CELL;
@@ -19,7 +19,6 @@ public class TicTacToeGrid {
         setRowVectors();
         setColumnVectors();
         setDiagonalVectors();
-        this.gameStatus = GameStatus.GAME_NOT_STARTED;
         this.EMPTY_CELL = new Cell();
         this.X_CELL = new Cell();
         this.X_CELL.setCellStatus(CellState.X);
@@ -28,28 +27,50 @@ public class TicTacToeGrid {
     }
 
     Predicate<Cell> isEmptyCell = cell -> cell.equals(EMPTY_CELL);
-    Predicate<GameStatus> gameIsNotStarted = gameState -> gameState.equals(GameStatus.GAME_NOT_STARTED);
-    Predicate<GameStatus> gameIsInProgress = gameState -> gameState.equals(GameStatus.GAME_IN_PROGRESS);
 
     public boolean setCell(int row, int column, CellState cellState) {
-        if (isEmptyCell.test(gameGrid[row][column]) && (gameIsNotStarted.or(gameIsInProgress).test(gameStatus))) {
+        if (isEmptyCell.test(gameGrid[row][column]))  {
             gameGrid[row][column].setCellStatus(cellState);
-            updateGameStatus();
-
-            //**************************************************************************************
-            rateAllCells();
-            //*******************************************************************************************
-
+            setAllCellWinnableRatings();
             return true;
         } else {
             return false;
         }
     }
 
+    public boolean hasThreeInRow(Cell cellValue) {
+        Long count = Arrays.stream(vectors)
+                .map(a -> Arrays.stream(a))
+                .filter(a -> a.allMatch(cell -> cell.equals(cellValue)))
+                .count();
+        return count >= 1;
+    }
+
+    public boolean hasEmptyCell() {
+        for (var vector : vectors) {
+            if (Arrays.asList(vector).contains(EMPTY_CELL)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Coordinates findBestMove() {
+        OptionalInt highestCellRating = Arrays.stream(gameGrid)
+                .flatMap(array -> Arrays.stream(array))
+                .mapToInt(cell -> cell.getWinnableRating())
+                .max();
+        Optional<Cell> highestRatedCell = Arrays.stream(gameGrid)
+                .flatMap(array -> Arrays.stream(array))
+                .filter(cell -> cell.getWinnableRating() == highestCellRating.getAsInt())
+                .findFirst();
+        return highestRatedCell.get().getCoordinates();
+    }
+
     private void setGameGrid() {
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 3; column++) {
-                this.gameGrid[row][column] = new Cell();
+                this.gameGrid[row][column] = new Cell(new Coordinates(row, column));
             }
         }
     }
@@ -86,57 +107,22 @@ public class TicTacToeGrid {
         this.vectors[7][2] = this.gameGrid[0][2];
     }
 
-    private void updateGameStatus() {
-        if (gameIsNotStarted.test(gameStatus)   /*gameStatus == GameStatus.GAME_NOT_STARTED */) {
-            gameStatus = GameStatus.GAME_IN_PROGRESS;
-        } else if (isThreeInRow(X_CELL)) {
-            gameStatus = GameStatus.X_WINS;
-        } else if (isThreeInRow(O_CELL)) {
-            gameStatus = GameStatus.O_WINS;
-        } else if (!hasEmptyCell()) {
-            gameStatus = GameStatus.DRAW;
-        }
-    }
-
-    public boolean isThreeInRow(Cell cellValue) {
-        Long count = Arrays.stream(vectors)
-                .map(a -> Arrays.stream(a))
-                .filter(a -> a.allMatch(cell -> cell.equals(cellValue)))
-                .count();
-        return count >= 1;
-    }
-
-    public boolean hasEmptyCell() {
-        for (var vector : vectors) {
-            if (Arrays.asList(vector).contains(EMPTY_CELL)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public GameStatus getGameStatus() {
-        return this.gameStatus;
-    }
-
-    //************************************************************************************************************
-
-    private void rateAllCells() {
-        resetAllCellRatings();
+    private void setAllCellWinnableRatings() {
+        clearAllCellWinnableRatings();
         Arrays.stream(vectors)
                 .filter(this::hasOneMatchingInVector)
                 .flatMap(vector -> Arrays.stream(vector).filter(this::isEmptyCell))
-                .forEach(cell -> cell.setCellRating(10));
+                .forEach(cell -> cell.setWinnableRating(10));
         Arrays.stream(vectors)
                 .filter(this::hasTwoMatchingInVector)
                 .flatMap(vector -> Arrays.stream(vector).filter(this::isEmptyCell))
-                .forEach(cell -> cell.setCellRating(20));
+                .forEach(cell -> cell.setWinnableRating(20));
     }
 
-    private void resetAllCellRatings() {
+    private void clearAllCellWinnableRatings() {
         Arrays.stream(vectors)
                 .flatMap(vector -> Arrays.stream(vector))
-                .forEach(cell -> cell.setCellRating(0));
+                .forEach(cell -> cell.setWinnableRating(0));
     }
 
     private boolean isEmptyCell(Cell cell) {

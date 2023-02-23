@@ -1,15 +1,23 @@
-package org.example.model;
+package org.example;
 
 import java.util.Objects;
 import java.util.function.Predicate;
 
 public class Cell {
-    CellState cellState;
-    int cellRating;
+    private CellState cellState;
+    private int winnableRating;
+    private Coordinates coordinates;
+
+    public Cell() {
+    }
+
+    public Cell(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
 
     {
         this.cellState = CellState.EMPTY;
-        this.cellRating = 0;
+        this.winnableRating = 0;
     }
 
     Predicate<CellState> isEmptyCell = cell -> cell.equals(CellState.EMPTY);
@@ -27,12 +35,16 @@ public class Cell {
         return this.cellState;
     }
 
-    public int getCellRating() {
-        return cellRating;
+    public int getWinnableRating() {
+        return winnableRating;
     }
 
-    public void setCellRating(int cellRating) {
-        this.cellRating = cellRating;
+    public void setWinnableRating(int winnableRating) {
+        this.winnableRating = winnableRating;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 
     @Override
@@ -40,7 +52,7 @@ public class Cell {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cell cell = (Cell) o;
-        return cellState == cell.cellState;
+        return this.cellState == cell.getCellStatus();
     }
 
     @Override
@@ -52,7 +64,7 @@ public class Cell {
     public String toString() {
         return "Cell{" +
                 "cellStatus=" + cellState +
-                "cellRating=" + cellRating +
+                "cellRating=" + winnableRating +
                 '}';
     }
 }
