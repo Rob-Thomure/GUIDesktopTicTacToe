@@ -1,4 +1,4 @@
-package org.example.newVersion;
+package org.example;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,15 +48,11 @@ public class TicTacToe extends JFrame {
         menuGame.addSeparator();
         menuGame.add(menuExit);
 
-
         menuHumanHuman.addActionListener(event -> controller.activateHumanVsHumanMenuItem());
         menuHumanRobot.addActionListener(event -> controller.activateHumanVsRobotMenuItem());
         menuRobotHuman.addActionListener(event -> controller.activateRobotVsHumanMenuItem());
         menuRobotRobot.addActionListener(event -> controller.activateRobotVsRobotMenuItem());
         menuExit.addActionListener(event -> System.exit(0));
-
-
-
 
         this.buttonPlayer1 = new JButton("Human");
         this.buttonPlayer1.setName("ButtonPlayer1");
@@ -68,6 +64,8 @@ public class TicTacToe extends JFrame {
         this.buttonStartReset.setName("ButtonStartReset");
         this.buttonStartReset.setBackground(Color.WHITE);
         this.buttonStartReset.addActionListener(e -> this.controller.startReset());
+
+
         header.add(this.buttonStartReset, BorderLayout.CENTER);
 
         this.buttonPlayer2 = new JButton("Human");
@@ -105,7 +103,8 @@ public class TicTacToe extends JFrame {
                 JButton cell = new JButton(" ");
                 cell.setName("Button" + column + row);
                 cell.setFont(new Font("sans-serif",Font.PLAIN, 40));
-                cell.addActionListener(e -> controller.humanTakeTurn(cell));
+                //cell.addActionListener(e -> controller.humanTakeTurn(cell));
+                cell.addActionListener(e -> controller.takeTurn(cell));
                 this.board.add(cell);
                 gameGrid[gridRow][gridColumn] = cell;
             }
@@ -138,10 +137,6 @@ public class TicTacToe extends JFrame {
 
     public void setLabelStatus(String text) {
         this.labelStatus.setText(text);
-
-
-
-
     }
 
     public void setButtonStartResetText(String text) {
@@ -178,6 +173,10 @@ public class TicTacToe extends JFrame {
 
     private void setCellBlankText(JButton cell) {
         cell.setText(" ");
+    }
+
+    public void placeMoveOnView(Coordinates coordinates, PlayerTurn playerTurn) {
+        gameGrid[coordinates.getRow()][coordinates.getColumn()].setText(playerTurn.toString());
     }
 
 }
